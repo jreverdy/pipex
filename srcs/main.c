@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "../incs/pipex.h"
-#include <stdio.h>
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	int			f1;
 	int			f2;
@@ -28,10 +27,13 @@ int main(int ac, char **av, char **envp)
 	f2 = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (f1 < 0 || f2 < 0)
 		return (-1);
-	ft_get_command(av, &cmd); // recuperer les commandes utilisées
-	ft_get_path(&cmd, envp); //recuperer la ligne PATH dans la variable d'ENV (substr)
-	ft_split(cmd.path_line, ':'); // creer un tableau de tableau de tous mes chemins
-	//	ft_check_access(&cmd, envp)// faire une fonction pour verifier si le path est bon
-	//	ft_new_path(&cmd, envp);	strjoin le / et le nom de la commande
-	ft_pipex(f1, f2, av, envp); // creer les pipes et fork
+	ft_get_command(av, &cmd);
+	ft_get_path(&cmd, envp);
+	cmd.path_tab = ft_split(*envp, ':');
+	cmd.com1_path = ft_check_access(*cmd.com1, &cmd, av);
+	cmd.com2_path = ft_check_access(*cmd.com2, &cmd, av);
+	printf("%s\n", cmd.com1_path);
+	printf("%s\n", cmd.com2_path);
+//	ft_pipex(f1, f2, &cmd);
+	return (0);
 }

@@ -12,11 +12,47 @@
 
 #include "../incs/pipex.h"
 
-void	ft_check_access(t_command *cmd, char **envp)
+void	ft_error(char *path, char *cmd_name, t_command *cmd, char **av)
 {
-	int	i;
+	if (access(path, 0) == -1 && cmd_name == cmd->com1[0])
+	{
+		ft_putstr("Command not found bro : ");
+		ft_putstr(av[2]);
+		ft_putstr("\n");
+		return ;
+	}
+	else if (access(path, 0) == -1 && cmd_name == cmd->com2[0])
+	{
+		ft_putstr("Command not found bro : ");
+		ft_putstr(av[3]);
+		ft_putstr("\n");
+		exit(0);
+	}
+}
 
-	i = -1;
-	if (access(envp, R_OK) == 0)
-		return (ft_strdup(envp));
+char	*ft_check_access(char *cmd_name, t_command *cmd, char **av)
+{
+	char	*path;
+	char	*temp;
+	int		i;
+
+	i = 0;
+	if (access(cmd_name, X_OK) == 0)
+		return (ft_strdup(cmd_name));
+	while (cmd->path_tab[i])
+	{
+		temp = ft_strjoin(cmd->path_tab[i], "/");
+		path = ft_strjoin(temp, &cmd_name[0]);
+		free(temp);
+		if (access(path, X_OK) == 0)
+			return (path);
+		else
+		{
+			free(path);
+			path = NULL;
+		}
+		i++;
+	}
+	ft_error(path, cmd_name, cmd, av);
+	return (NULL);
 }

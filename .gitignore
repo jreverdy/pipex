@@ -55,3 +55,7 @@ a.out
 pipex
 cmake-build-debug
 .idea
+non
+oui
+srcs/training.c
+srcs/training2.c
