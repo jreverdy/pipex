@@ -4,18 +4,18 @@ CFLAGS	= -Wall -Wextra -Werror
 INCS		= incs/pipex.h
 INCS_PATH	= incs
 SRCS_PATH	= srcs
-OBJS_PATH	= .obj
+OBJS_PATH	= .objs
 VPATH		= srcs
 
-SRCS	 =	ft_get_path.c		\
-			main.c				\
+SRCS	 =	main.c				\
+			ft_get_path.c		\
 			ft_check_access.c	\
 			ft_get_command.c	\
+			pipex.c				\
 
 LIBFT_AR	=	./libft/libft.a
 
-OBJ		= $(SRCS:.c=.o)
-OBJS	= $(addprefix $(OBJS_PATH)/, $(OBJ))
+OBJS	= $(addprefix $(OBJS_PATH)/, $(SRCS:.c=.o))
 
 NAME	= pipex
 
@@ -25,6 +25,7 @@ libft:
 	@make -C ./libft --no-print-directory
 
 $(OBJS_PATH)/%.o: %.c $(INCS) Makefile
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT_AR)
@@ -40,4 +41,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all libft mlx clean fclean re
+.PHONY: all libft clean fclean re

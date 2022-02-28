@@ -16,17 +16,17 @@ void	ft_error(char *path, char *cmd_name, t_command *cmd, char **av)
 {
 	if (access(path, 0) == -1 && cmd_name == cmd->com1[0])
 	{
-		ft_putstr("Command not found bro : ");
-		ft_putstr(av[2]);
-		ft_putstr("\n");
+		ft_putstr_fd("Command not found : ", 1);
+		ft_putstr_fd(av[2], 1);
+		ft_putstr_fd("\n", 1);
 		return ;
 	}
 	else if (access(path, 0) == -1 && cmd_name == cmd->com2[0])
 	{
-		ft_putstr("Command not found bro : ");
-		ft_putstr(av[3]);
-		ft_putstr("\n");
-		exit(0);
+		ft_putstr_fd("Command not found : ", 1);
+		ft_putstr_fd(av[3], 1);
+		ft_putstr_fd("\n", 1);
+		exit(127);
 	}
 }
 
@@ -39,7 +39,7 @@ char	*ft_check_access(char *cmd_name, t_command *cmd, char **av)
 	i = 0;
 	if (access(cmd_name, X_OK) == 0)
 		return (ft_strdup(cmd_name));
-	while (cmd->path_tab[i])
+	while (cmd->path_tab && cmd->path_tab[i])
 	{
 		temp = ft_strjoin(cmd->path_tab[i], "/");
 		path = ft_strjoin(temp, &cmd_name[0]);
